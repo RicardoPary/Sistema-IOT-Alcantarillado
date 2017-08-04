@@ -1,0 +1,246 @@
+create table dato
+(
+  codigo int(11) NOT NULL,
+  nivel_agua int(11) NOT NULL,
+  nivel_ultrasonido int(11) note null,
+  fecha timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  hora time NOT NULL,
+  id_sensor varchar(5) CHARACTER SET utf8 NOT NULL,
+  Primary key (codigo),
+  Foreign key(id_sensor) references sensor(id_sensor)
+);
+
+create table alcantarillado
+(
+	id_alcanta varchar(5) not null,
+	id_sensor varchar(5) not null,
+	tipo_a varchar(5),
+	dimension varchar(15),
+	profundidad varchar(15),
+	cant_tot_almacenaje varchar(15),
+	Primary key(id_alcanta),
+	Foreign key(id_sensor) references sensor(id_sensor)
+);
+
+create table sensor
+(
+	id_sensor varchar(5) not null,
+	id_agua varchar(5),
+	id_ultrasonido varchar(5),
+	id_wifi varchar(5),
+	valor integer,
+	Primary key(id_sensor)
+);
+
+create table ubicacion
+(
+	id_ubicacion varchar(5) not null,
+	id_alcanta varchar(5) not null,
+	distrito varchar(50),
+	zona varchar(50),
+	calle varchar(50),
+	latitud varchar(15),
+	longitud  varchar(15),
+	Primary key(id_ubicacion),
+	Foreign key(id_alcanta) references alcantarillado(id_alcanta)
+);
+
+create table empleado
+(
+	id_empleado varchar(10) not null,
+	nombre varchar(50),
+	tipo_e varchar(15),
+	usuario varchar(20),
+	contrasenia varchar(20),
+	Primary key(id_empleado)
+);
+
+create table ubi_emp
+(
+	id_ubicacion varchar(5) not null,
+	id_empleado varchar(10)not null,
+	Primary key(id_ubicacion,id_empleado)
+);
+
+
+create table mantenimiento
+(
+	id_mantenimiento varchar(5) not null,
+	fecha_m date,
+	hora_m varchar(5),
+	observacion varchar(500),
+	Primary key(id_mantenimiento)
+);
+
+ create table emple_manten
+(
+	id_empleado varchar(10) not null,
+	id_mantenimiento varchar(5) not null,
+	Primary key(id_empleado, id_mantenimiento)
+);
+
+ create table manten_alcanta
+(
+	id_alcanta varchar(5) not null,
+	id_mantenimiento varchar(5) not null,
+	Primary key(id_alcanta, id_mantenimiento)
+);
+----------------------------------------------------------------datos---------------------------------------------
+
+dato (codigo, nivel_agua, nivel_ultrasonido,fecha_a,hora_a,id_sensor)
+insert into dato values('23','50','2017-05-16','12:00','3');
+/*
+insert into dato values('a0002','s0002','10/01/2017','SI','05:00');
+insert into dato values('a0003','s0003','22/01/2017','NO','12:00');
+insert into dato values('a0004','s0001','22/01/2017','NO','13:00');
+insert into dato values('a0005','s0002','15/01/2017','SI','16:44');
+insert into dato values('a0006','s0004','16/01/2017','SI','14:20');
+*/
+
+sensor (id_sensor,id_agua,id_ultrasonido,id_wifi, valor)
+
+insert into sensor values('1','w0001','a0001','us001',234);
+insert into sensor values('2','w0001','a0002','us002',345);
+insert into sensor values('3','w0001','a0003','us003',456);
+insert into sensor values('4','w0002','a0004','us004',567);
+insert into sensor values('5','w0002','a0005','us005',870);
+
+alcantarillado (id_alcanta,id_sensor,tipo_a,dimension,profundidad,cant_tot_almacenaje)
+
+insert into alcantarillado values('c0001','1','A','1.00x0.60 [m]','1.20 [m]','120000 [m^3]');
+insert into alcantarillado values('c0002','2','B','1.00x0.60 [m]','1.20 [m]','120000 [m^3]');
+insert into alcantarillado values('c0003','3','C','1.00x0.60 [m]','1.20 [m]','120000 [m^3]');
+insert into alcantarillado values('c0004','4','A','1.00x0.60 [m]','1.20 [m]','120000 [m^3]');
+
+
+ubicacion (id_ubicacion,id_alcanta,distrito,zona,calle,latitud,longitud)
+
+insert into ubicacion values('u0001','c0001','MAX PAREDES','LOS ANDES','10 DE MEDINA','-16.4985516','-68.1483378');
+insert into ubicacion values('u0002','c0002','MAX PAREDES','ROSARIO','TARIJA','-16.4992064','-68.1384318');
+insert into ubicacion values('u0003','c0003','MAX PAREDES','GRAN PODER','ELOY SALMON','-16.5002885','-68.1429252');
+insert into ubicacion values('u0004','c0004','MAX PAREDES','GARITA DE LIMA','JUAN GRANIER','-16.496402','-68.1472903');
+
+empleado (id_empleado,nombre,tipo_e,usuario,contrasenia)
+
+insert into empleado values('10039164','MIRIAM MAMANI HUANCA','GERENTE','ADMIN','12345');
+insert into empleado values('8039174','CAROLINA MAMANI FLORES','GERENTE','CAR8039174','CMF8039174');
+insert into empleado values('10039174','OMAR PEREZ TELLEZ','MANTENIMIENTO','OMA10039174','CPT10039174');
+insert into empleado values('4039274','PEDRO LIMA CACERES','MANTENIMIENTO','PED4039274','PLC4039274');
+insert into empleado values('10039574','CARLOS LOPEZ MENDOZA','MANTENIMIENTO','CAR10039574','CPT10039574');
+insert into empleado values('7039974','FERNANDO CUTTI ALVAREZ','MANTENIMIENTO','FER7039574','FCA7039974');
+
+ubi_emp(id_ubicacion,id_empleado)
+
+insert into ubi_emp values('u0001','10039174');
+insert into ubi_emp values('u0002','4039274');
+insert into ubi_emp values('u0003','10039574');
+insert into ubi_emp values('u0004','7039974');
+
+mantenimiento(id_mantenimiento,fecha_m,hora_m,observacion)
+
+insert into mantenimiento values('m0001','2017-01-02','13:01','ROPTURA DE ESCURRIMIENTO');
+insert into mantenimiento values('m0002','2017-01-10','06:36','DESGASTE DE LAS TAPAS DEL ALCANTARILLADO');
+insert into mantenimiento values('m0003','2017-01-15','17:00','ROPTURA DE LA INFRAESTRUCTURA');
+insert into mantenimiento values('m0004','2017-01-16','15:30','DESGASTE DE LAS TAPAS DEL ALCANTARILLADO PRUVIAL');
+
+emple_manten(id_empleado,id_mantenimiento)
+
+insert into emple_manten values('10039174','m0001');
+insert into emple_manten values('10039574','m0002');
+insert into emple_manten values('4039274','m0003');
+insert into emple_manten values('7039974','m0004');
+insert into emple_manten values('10039174','m0004');
+insert into emple_manten values('10039574','m0003');
+insert into emple_manten values('4039274','m0002');
+insert into emple_manten values('7039974','m0001');
+
+manten_alcanta(	id_alcanta, id_mantenimiento)
+
+insert into manten_alcanta values('c0001','m0001');
+insert into manten_alcanta values('c0002','m0002');
+insert into manten_alcanta values('c0003','m0003');
+insert into manten_alcanta values('c0004','m0004');
+
+---------------------------------------------------------
+
+CREATE TABLE alerta(
+  id_alerta varchar(5) NOT NULL,
+  id_sensor varchar(5) NOT NULL,
+  fecha_a date DEFAULT NULL,
+  control varchar(2) DEFAULT NULL,
+  dato int(11) DEFAULT NULL,
+  hora_a varchar(5) DEFAULT NULL, 
+);
+
+
+INSERT INTO alerta VALUES('al001', '1', '2017-01-02', 'SI', 234, '12:00'),
+INSERT INTO alerta VALUES('al002', '2', '2017-01-10', 'SI', 653, '05:00'),
+INSERT INTO alerta VALUES('al003', '3', '2017-01-22', 'NO', 533, '12:00'),
+INSERT INTO alerta VALUES('al004', '1', '2017-01-22', 'NO', 284, '13:00'),
+INSERT INTO alerta VALUES('al005', '2', '2017-01-15', 'SI', 299, '16:44'),
+INSERT INTO alerta VALUES('al006', '4', '2017-01-16', 'SI', 693, '14:20');
+
+
+
+------------------------------CONSULTAS---------------------------------------
+
+
+
+
+MODIFICAR
+	Reporte de las cámaras ya controladas.(REPORTE DE CONTROL)
+
+
+
+select distinct m.id_mantenimiento, m.fecha_m, m.hora_m,m.observacion,c.id_alcanta,u.distrito,u.zona,u.calle
+from alerta a, sensor s, alcantarillado c, mantenimiento m, ubicacion u
+where a.control='SI' and a.id_sensor=s.id_sensor 
+and s.id_sensor=c.id_sensor and c.id_mantenimiento=m.id_mantenimiento
+and c.id_alcanta=u.id_alcanta
+
+FUNCIONA
+----mostrando trabajadores teniendo como dato: id_mantenimiento
+
+select e.nombre
+from mantenimiento m, emple_manten em, empleado e
+where m.id_mantenimiento='m0001' and m.id_mantenimiento=em.id_mantenimiento
+and em.id_empleado=e.id_empleado
+
+
+
+MODIFICAR  
+	Obtener la ubicación de las cámaras taponadas.
+(REPORTE DE ALERTAS AL DIA)
+
+select c.id_alcanta,d.codigo, d.hora, u.distrito,u.zona,u.calle
+from dato d, sensor s, alcantarillado c, ubicacion u
+where d.id_sensor=s.id_sensor and s.id_sensor=c.id_sensor and c.id_alcanta=u.id_alcanta and DATE(d.fecha)=DATE(CURRENT_TIMESTAMP)
+group by c.id_alcanta;
+
+	Mostrar el registro de las alertas que se dieron en el transcurso de los dias.
+(REGISTRO DE ALERTAS)
+
+select c.id_alcanta,d.codigo,d.fecha, d.hora, u.distrito,u.zona,u.calle
+from dato d, sensor s, alcantarillado c, ubicacion u
+where d.id_sensor=s.id_sensor and s.id_sensor=c.id_sensor and c.id_alcanta=u.id_alcanta
+group by c.id_alcanta;
+
+
+
+REQUERIMIENTOS DEL EMPLEADO
+	Recibir reporte de las cámaras controladas por los demás empleados.
+
+
+	Cuanto de tiempo tiene para realizar la limpieza o mantenimiento de las cámaras taponadas antes que este explote.
+
+
+	Sabiendo que el sensor está a 1/3 de la cámara nos emita una alerta de aviso.
+
+
+	Obtener la ubicación de las cámaras taponadas más cercanas a ellos.
+
+
+  como recibe el mantenimiento e informacon de q alcantarillado esta tapado
+
+
+
